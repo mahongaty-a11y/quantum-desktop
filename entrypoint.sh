@@ -1,18 +1,15 @@
 #!/bin/bash
-# no set -u, no set -e - never exit early
 DESKTOP_USER="${DESKTOP_USER:-rdpuser}"
 DESKTOP_PASS="${DESKTOP_PASS:-changeme}"
 log() { echo "[entrypoint] $*"; }
 
 log "starting"
 
-# user
 id "$DESKTOP_USER" >/dev/null 2>&1 || useradd -m -s /bin/bash "$DESKTOP_USER" 2>/dev/null
 echo "$DESKTOP_USER:$DESKTOP_PASS" | chpasswd 2>/dev/null
 echo "root:$DESKTOP_PASS" | chpasswd 2>/dev/null
 usermod -aG sudo "$DESKTOP_USER" 2>/dev/null
 
-# find a session binary
 SESSION=""
 for s in startplasma-x11 startkde startxfce4 xfce4-session; do
   if command -v "$s" >/dev/null 2>&1; then SESSION="$s"; break; fi
@@ -39,7 +36,7 @@ log "starting xrdp"
 /usr/sbin/xrdp 2>&1 | head -5
 sleep 2
 
-log "xrdp status:"
+log "xrdp ports:"
 ss -tln 2>/dev/null | grep -E "3389|3350" || log "no xrdp ports"
 
 log "starting Xvfb"
