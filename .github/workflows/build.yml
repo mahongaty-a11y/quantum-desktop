@@ -29,6 +29,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/quantum-desktop:latest
-            ghcr.io/${{ github.repository_owner }}/quantum-desktop:v3
+            ghcr.io/${{ github.repository_owner }}/quantum-desktop:v4
           cache-from: type=gha
           cache-to: type=gha,mode=max
